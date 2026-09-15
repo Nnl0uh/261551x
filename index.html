@@ -47,7 +47,10 @@ const data=[
 {id:"swarm",name:"Autonomous Swarm",cost:5000,power:220,desc:"+220 energy / second"},
 {id:"singularity",name:"Singularity Engine",cost:25000,power:1200,desc:"+1,200 energy / second"}
 ];
-let s=JSON.parse(localStorage.getItem("261551X")||"null")||{energy:0,cycles:0,owned:{}};
+const initialState={energy:0,cycles:0,owned:{}};
+function load(){try{return JSON.parse(localStorage.getItem("261551X")||"null")||initialState}catch{return initialState}}
+function save(){try{localStorage.setItem("261551X",JSON.stringify(s))}catch{}}
+let s=load();
 function fmt(n){return Math.floor(n).toLocaleString()}
 function eps(){return data.reduce((a,u)=>a+(s.owned[u.id]||0)*u.power,0)}
 function log(t){let e=document.createElement("div");e.textContent="> "+t;document.querySelector("#log").prepend(e)}
@@ -57,7 +60,6 @@ let box=document.querySelector("#upgrades");box.innerHTML="";
 data.forEach(u=>{let owned=s.owned[u.id]||0, cost=Math.floor(u.cost*Math.pow(1.18,owned));let d=document.createElement("div");d.className="upgrade";d.innerHTML=`<b>${u.name}</b><div class="desc">${u.desc}</div><div class="cost">${fmt(cost)} energy · owned ${owned}</div><button ${s.energy<cost?"disabled":""}>Build</button>`;d.querySelector("button").onclick=()=>{if(s.energy>=cost){s.energy-=cost;s.owned[u.id]=owned+1;log("Built "+u.name+" #"+(owned+1));save();render()}};box.appendChild(d)})
 if(s.energy>=100000){document.querySelector("#win").style.display="grid";document.querySelector("#final").textContent=`Final output: ${fmt(eps())} energy/sec · ${fmt(s.energy)} energy.`}
 }
-function save(){localStorage.setItem("261551X",JSON.stringify(s))}
 document.querySelector("#orb").onclick=()=>{s.energy+=1+Math.floor(eps()*.02);s.cycles++;if(s.cycles%25===0)log("Manual pulse accepted. Core stability +1.");save();render()}
 setInterval(()=>{let p=eps();if(p){s.energy+=p/10;save();render()}},100)
 log("Boot sequence complete.");log("Awaiting operator input.");render();
