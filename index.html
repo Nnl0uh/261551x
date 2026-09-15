@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>261551X // CORE</title>
+<style>
+:root{--bg:#080b10;--panel:#10151d;--panel2:#151c26;--line:#263140;--text:#e8edf5;--muted:#8793a5;--accent:#61e7ff;--good:#7dffb2;--warn:#ffd166}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#172b3b 0,#080b10 42%);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}
+header{padding:20px max(18px,calc((100vw - 1100px)/2));border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:900;letter-spacing:.18em}.status{font-size:12px;color:var(--good)}main{max-width:1100px;margin:auto;padding:22px 18px 50px}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.card{background:linear-gradient(180deg,#121923,#0d1219);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 15px 50px #0005}
+h1{font-size:clamp(30px,6vw,64px);margin:0;letter-spacing:-.05em}.sub{color:var(--muted);margin:6px 0 22px}
+.core{display:flex;align-items:center;justify-content:center;min-height:340px;position:relative}.orb{width:210px;height:210px;border-radius:50%;border:1px solid #61e7ff88;background:radial-gradient(circle,#4de9ff33,#4de9ff0 60%);box-shadow:0 0 35px #61e7ff55, inset 0 0 40px #61e7ff22;display:grid;place-items:center;cursor:pointer;user-select:none;transition:.12s}.orb:active{transform:scale(.96);box-shadow:0 0 60px #61e7ffaa}.orb span{font-size:24px;font-weight:900;letter-spacing:.12em}.ring{position:absolute;width:260px;height:260px;border:1px dashed #61e7ff44;border-radius:50%;animation:spin 18s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.stat{background:var(--panel2);border-radius:12px;padding:12px}.label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}.value{font-size:22px;font-weight:800;margin-top:3px}
+button{width:100%;background:#18212c;color:var(--text);border:1px solid #344254;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:8px}button:hover{border-color:var(--accent)}button:disabled{opacity:.4;cursor:not-allowed}.upgrade{padding:14px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;margin:10px 0}.upgrade b{display:block}.cost{font-size:12px;color:var(--accent)}.desc{font-size:13px;color:var(--muted);margin:5px 0}.log{height:180px;overflow:auto;font:12px ui-monospace,monospace;color:#aab6c6;background:#070a0e;border-radius:10px;padding:12px}.log div{margin:0 0 7px}.win{position:fixed;inset:0;background:#05080cee;display:none;place-items:center;padding:20px;z-index:5}.win .card{max-width:600px;text-align:center}.win h2{font-size:48px;margin:0 0 8px}@media(max-width:800px){.grid{grid-template-columns:1fr}.core{min-height:300px}.orb{width:180px;height:180px}.ring{width:225px;height:225px}}
+</style>
+</head>
+<body>
+<header><div class="logo">261551X // CORE</div><div class="status">● ONLINE</div></header>
+<main>
+<section class="card" style="margin-bottom:18px">
+<h1>Awaken the machine.</h1><div class="sub">Generate energy. Build infrastructure. Push 261551X beyond its original limits.</div>
+<div class="stats">
+<div class="stat"><div class="label">Energy</div><div id="energy" class="value">0</div></div>
+<div class="stat"><div class="label">Per second</div><div id="eps" class="value">0</div></div>
+<div class="stat"><div class="label">Cycles</div><div id="cycles" class="value">0</div></div>
+</div>
+</section>
+<div class="grid">
+<div>
+<div class="card core"><div class="ring"></div><div class="orb" id="orb"><span>261551X</span></div></div>
+<div class="card" style="margin-top:18px"><div class="label">System log</div><div id="log" class="log" style="margin-top:10px"></div></div>
+</div>
+<div class="card">
+<div class="label">Infrastructure</div>
+<div id="upgrades"></div>
+</div>
+</div>
+</main>
+<div class="win" id="win"><div class="card"><h2>CORE AWAKENED</h2><p>261551X has completed its first autonomous cycle.</p><p id="final"></p><button onclick="location.reload()">Run another cycle</button></div></div>
+<script>
+const data=[
+{id:"coil",name:"Flux Coil",cost:25,power:1,desc:"+1 energy / second"},
+{id:"array",name:"Compute Array",cost:150,power:7,desc:"+7 energy / second"},
+{id:"reactor",name:"Zero-Point Reactor",cost:900,power:40,desc:"+40 energy / second"},
+{id:"swarm",name:"Autonomous Swarm",cost:5000,power:220,desc:"+220 energy / second"},
+{id:"singularity",name:"Singularity Engine",cost:25000,power:1200,desc:"+1,200 energy / second"}
+];
+let s=JSON.parse(localStorage.getItem("261551X")||"null")||{energy:0,cycles:0,owned:{}};
+function fmt(n){return Math.floor(n).toLocaleString()}
+function eps(){return data.reduce((a,u)=>a+(s.owned[u.id]||0)*u.power,0)}
+function log(t){let e=document.createElement("div");e.textContent="> "+t;document.querySelector("#log").prepend(e)}
+function render(){
+document.querySelector("#energy").textContent=fmt(s.energy);document.querySelector("#eps").textContent=fmt(eps());document.querySelector("#cycles").textContent=fmt(s.cycles);
+let box=document.querySelector("#upgrades");box.innerHTML="";
+data.forEach(u=>{let owned=s.owned[u.id]||0, cost=Math.floor(u.cost*Math.pow(1.18,owned));let d=document.createElement("div");d.className="upgrade";d.innerHTML=`<b>${u.name}</b><div class="desc">${u.desc}</div><div class="cost">${fmt(cost)} energy · owned ${owned}</div><button ${s.energy<cost?"disabled":""}>Build</button>`;d.querySelector("button").onclick=()=>{if(s.energy>=cost){s.energy-=cost;s.owned[u.id]=owned+1;log("Built "+u.name+" #"+(owned+1));save();render()}};box.appendChild(d)})
+if(s.energy>=100000){document.querySelector("#win").style.display="grid";document.querySelector("#final").textContent=`Final output: ${fmt(eps())} energy/sec · ${fmt(s.energy)} energy.`}
+}
+function save(){localStorage.setItem("261551X",JSON.stringify(s))}
+document.querySelector("#orb").onclick=()=>{s.energy+=1+Math.floor(eps()*.02);s.cycles++;if(s.cycles%25===0)log("Manual pulse accepted. Core stability +1.");save();render()}
+setInterval(()=>{let p=eps();if(p){s.energy+=p/10;save();render()}},100)
+log("Boot sequence complete.");log("Awaiting operator input.");render();
+</script>
+</body>
+</html>
