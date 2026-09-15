@@ -38,7 +38,7 @@ button{width:100%;background:#18212c;color:var(--text);border:1px solid #344254;
 </div>
 </div>
 </main>
-<div class="win" id="win"><div class="card"><h2>CORE AWAKENED</h2><p>261551X has completed its first autonomous cycle.</p><p id="final"></p><button onclick="location.reload()">Run another cycle</button></div></div>
+<div class="win" id="win"><div class="card"><h2>CORE AWAKENED</h2><p>261551X has completed its first autonomous cycle.</p><p id="final"></p><button id="restart" type="button">Run another cycle</button></div></div>
 <script>
 const data=[
 {id:"coil",name:"Flux Coil",cost:25,power:1,desc:"+1 energy / second"},
@@ -74,6 +74,14 @@ function pulse(){
   render();
 }
 document.querySelector("#orb").addEventListener("click",pulse);
+document.querySelector("#restart").addEventListener("click",()=>{
+  s={...initialState,owned:{}};
+  try{localStorage.removeItem("261551X")}catch{}
+  document.querySelector("#win").style.display="none";
+  document.querySelector("#log").innerHTML="";
+  log("Cycle reset. Awaiting operator input.");
+  render();
+});
 setInterval(()=>{const power=eps();if(power){s.energy+=power/10;save();render()}},100)
 log("Boot sequence complete.");log("Awaiting operator input.");render();
 </script>
