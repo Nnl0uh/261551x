@@ -13,7 +13,7 @@ header{padding:20px max(18px,calc((100vw - 1100px)/2));border-bottom:1px solid v
 h1{font-size:clamp(30px,6vw,64px);margin:0;letter-spacing:-.05em}.sub{color:var(--muted);margin:6px 0 22px}
 .core{display:flex;align-items:center;justify-content:center;min-height:340px;position:relative}.orb{position:relative;z-index:1;width:210px;height:210px;margin:0;padding:0;border-radius:50%;border:1px solid #61e7ff88;background:radial-gradient(circle,#4de9ff33,#4de9ff0 60%);box-shadow:0 0 35px #61e7ff55, inset 0 0 40px #61e7ff22;display:grid;place-items:center;cursor:pointer;user-select:none;touch-action:manipulation;transition:.12s}.orb:active{transform:scale(.96);box-shadow:0 0 60px #61e7ffaa}.orb span{font-size:24px;font-weight:900;letter-spacing:.12em}.ring{position:absolute;z-index:0;pointer-events:none;width:260px;height:260px;border:1px dashed #61e7ff44;border-radius:50%;animation:spin 18s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.stat{background:var(--panel2);border-radius:12px;padding:12px}.label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}.value{font-size:22px;font-weight:800;margin-top:3px}
-button{width:100%;background:#18212c;color:var(--text);border:1px solid #344254;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:8px}button:hover{border-color:var(--accent)}button:disabled{opacity:.4;cursor:not-allowed}.upgrade{padding:14px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;margin:10px 0}.upgrade b{display:block}.cost{font-size:12px;color:var(--accent)}.desc{font-size:13px;color:var(--muted);margin:5px 0}.log{height:180px;overflow:auto;font:12px ui-monospace,monospace;color:#aab6c6;background:#070a0e;border-radius:10px;padding:12px}.log div{margin:0 0 7px}.win{position:fixed;inset:0;background:#05080cee;display:none;place-items:center;padding:20px;z-index:5}.win .card{max-width:600px;text-align:center}.win h2{font-size:48px;margin:0 0 8px}@media(max-width:800px){.grid{grid-template-columns:1fr}.core{min-height:300px}.orb{width:180px;height:180px}.ring{width:225px;height:225px}}
+button{width:100%;background:#18212c;color:var(--text);border:1px solid #344254;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:8px}button:hover{border-color:var(--accent)}button:disabled{opacity:.4;cursor:not-allowed}.upgrade{padding:14px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;margin:10px 0}.upgrade b{display:block}.cost{font-size:12px;color:var(--accent)}.desc{font-size:13px;color:var(--muted);margin:5px 0}.log{height:180px;overflow:auto;font:12px ui-monospace,monospace;color:#aab6c6;background:#070a0e;border-radius:10px;padding:12px}.log div{margin:0 0 7px}.donation{margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:24px;background:linear-gradient(135deg,#122936,#101923 60%,#18222d);border-color:#2d5364}.donation-copy{max-width:580px}.donation .label{color:var(--accent)}.donation h2{margin:5px 0 6px;font-size:clamp(22px,4vw,32px);letter-spacing:-.03em}.donation p{margin:0;color:var(--muted);line-height:1.55}.donation-action{flex:0 0 220px;padding:14px;border:1px solid #ffffff1a;border-radius:12px;background:#081017;display:grid;place-items:center}.donation-action img{display:block;width:190px;height:auto}.donation-action a{display:block;width:100%;border-radius:8px;transition:transform .15s ease,filter .15s ease}.donation-action a:hover{transform:translateY(-2px);filter:brightness(1.12)}.win{position:fixed;inset:0;background:#05080cee;display:none;place-items:center;padding:20px;z-index:5}.win .card{max-width:600px;text-align:center}.win h2{font-size:48px;margin:0 0 8px}@media(max-width:800px){.grid{grid-template-columns:1fr}.core{min-height:300px}.orb{width:180px;height:180px}.ring{width:225px;height:225px}.donation{align-items:stretch;flex-direction:column;gap:16px}.donation-action{flex-basis:auto}}
 </style>
 </head>
 <body>
@@ -37,6 +37,18 @@ button{width:100%;background:#18212c;color:var(--text);border:1px solid #344254;
 <div id="upgrades"></div>
 </div>
 </div>
+<section class="card donation" aria-labelledby="donation-title">
+<div class="donation-copy">
+<div class="label">Support the core</div>
+<h2 id="donation-title">Help keep 261551X online</h2>
+<p>If this experiment has been useful or fun, you can support development with a $15 cryptocurrency donation.</p>
+</div>
+<div class="donation-action">
+<a href="https://nowpayments.io/payment/?iid=4898948467&source=button" target="_blank" rel="noreferrer noopener" aria-label="Donate $15 with cryptocurrency via NOWPayments">
+<img src="https://nowpayments.io/images/embeds/payments-button-white.svg" alt="Donate $15 with cryptocurrency via NOWPayments">
+</a>
+</div>
+</section>
 </main>
 <div class="win" id="win"><div class="card"><h2>CORE AWAKENED</h2><p>261551X has completed its first autonomous cycle.</p><p id="final"></p><button id="restart" type="button">Run another cycle</button></div></div>
 <script>
