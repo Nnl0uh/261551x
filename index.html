@@ -44,7 +44,7 @@ button{width:100%;background:#18212c;color:var(--text);border:1px solid #344254;
 <p>If this experiment has been useful or fun, you can support development with a $15 cryptocurrency donation.</p>
 </div>
 <div class="donation-action">
-<a href="https://nowpayments.io/donation?api_key=process.env.api_key" target="_blank" rel="noreferrer noopener" aria-label="Donate $15 with cryptocurrency via NOWPayments">
+<a id="donation-link" href="#" target="_blank" rel="noreferrer noopener" aria-label="Donate $15 with cryptocurrency via NOWPayments" aria-disabled="true">
 <img src="https://nowpayments.io/images/embeds/donation-button-white.svg" alt="Donate $15 with cryptocurrency via NOWPayments">
 </a>
 </div>
@@ -95,6 +95,11 @@ document.querySelector("#restart").addEventListener("click",()=>{
   render();
 });
 setInterval(()=>{const power=eps();if(power){s.energy+=power/10;save();render()}},100)
+const donationLink=document.querySelector("#donation-link");
+fetch("/api/donation-url")
+  .then(response=>{if(!response.ok)throw new Error("Donation endpoint unavailable");return response.json()})
+  .then(({url})=>{donationLink.href=url;donationLink.removeAttribute("aria-disabled")})
+  .catch(()=>{donationLink.title="Donation link is temporarily unavailable";donationLink.addEventListener("click",event=>event.preventDefault())});
 log("Boot sequence complete.");log("Awaiting operator input.");render();
 </script>
 </body>
